@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { AuthDTO } from './dto';
+import { RegisterDTO, LoginDTO } from './dto';
 import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -12,20 +12,20 @@ export class AuthService {
     private jwtService: JwtService,
     private configService: ConfigService,
   ) { }
-  async register(authDTO: AuthDTO) {
+  async register(registerDTO: RegisterDTO) {
     //generate password to hashedPassword
-    const hashedPassword = await argon.hash(authDTO.password);
+    const hashedPassword = await argon.hash(registerDTO.password);
     try {
       //insert data to database
       const user = await this.prismaService.user.create({
         data: {
-          email: authDTO.email,
+          email: registerDTO.email,
           hashedPassword: hashedPassword,
-          fullName: authDTO.fullName,
-          address: authDTO.address,
-          language: authDTO.language,
-          dob: authDTO.dob,
-          avatar: authDTO.avatar,
+          fullName: registerDTO.fullName,
+          address: registerDTO.address,
+          language: registerDTO.language,
+          dob: registerDTO.dob,
+          avatar: registerDTO.avatar,
         },
         //only select id, email, createdAt
         select: {
@@ -44,11 +44,11 @@ export class AuthService {
     }
     //you should add constraint "unique" to user table
   }
-  async login(authDTO: AuthDTO) {
+  async login(loginDTO: LoginDTO) {
     //find user with input email
     const user = await this.prismaService.user.findUnique({
       where: {
-        email: authDTO.email,
+        email: loginDTO.email,
       },
     });
     if (!user) {
@@ -56,7 +56,7 @@ export class AuthService {
     }
     const passwordMatched = await argon.verify(
       user.hashedPassword,
-      authDTO.password,
+      loginDTO.password,
     );
     if (!passwordMatched) {
       throw new ForbiddenException('Incorrect password');
@@ -74,7 +74,7 @@ export class AuthService {
       email,
     };
     const jwtString = await this.jwtService.signAsync(payload, {
-      expiresIn: '10m',
+      expiresIn: '100m',
       secret: this.configService.get('JWT_SECRET'),
     });
     return {

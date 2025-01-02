@@ -1,19 +1,19 @@
-import { Controller, Post, Req, Body, ParseIntPipe } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDTO } from './dto'; //import a "folder"
+import { LoginDTO, RegisterDTO } from './dto'; //import a "folder"
 @Controller('auth')
 export class AuthController {
   //auth service is automatically created when initializing the controller
   constructor(private authService: AuthService) { }
   @Post('register') //register a new user
-  register(@Body() authDTO: AuthDTO) {
+  register(@Body() registerDTO: RegisterDTO) {
     //not validate using class-validator AND class-transformer
-    return this.authService.register(authDTO);
+    return this.authService.register(registerDTO);
   }
   //POST: .../auth/login
   @Post('login')
-  login(@Body() authDTO: AuthDTO) {
-    return this.authService.login(authDTO);
+  login(@Body() LoginDTO: LoginDTO) {
+    return this.authService.login(LoginDTO);
   }
 }
 //export = "make public"

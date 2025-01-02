@@ -8,20 +8,44 @@ datasource db {
 }
 
 model User {
-  id             Int      @id @default(autoincrement())
-  email          String   @unique
+  id             Int         @id @default(autoincrement())
+  email          String      @unique
   hashedPassword String
   fullName       String
   address        String
   language       String
   dob            DateTime
-    avatar         Bytes?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  avatar         Bytes?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
   //relationship
   notes          Note[]
+  collection     Collection?
 
   @@map("users") //users id "table's name" in Postgres SQL
+}
+
+model Collection {
+  id               Int                         @id @default(autoincrement())
+  title            String
+  userId           Int                         @unique
+  user             User                        @relation(fields: [userId], references: [id])
+  collectibleItems CollectionCollectibleItem[]
+}
+
+model CollectibleItem {
+  id          Int                         @id @default(autoincrement())
+  name        String
+  collections CollectionCollectibleItem[]
+}
+
+model CollectionCollectibleItem {
+  collectionId      Int
+  collectibleItemId Int
+  collection        Collection      @relation(fields: [collectionId], references: [id])
+  collectibleItem   CollectibleItem @relation(fields: [collectibleItemId], references: [id])
+
+  @@id([collectionId, collectibleItemId])
 }
 
 //One user can "write" Many notes
