@@ -11,8 +11,11 @@ model User {
   id             Int      @id @default(autoincrement())
   email          String   @unique
   hashedPassword String
-  firstName      String?
-  lastName       String?
+  fullName       String
+  address        String
+  language       String
+  dob            DateTime
+    avatar         Bytes?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   //relationship

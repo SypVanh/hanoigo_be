@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDate, IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 //Define a "type" of "authentication request"
 export class AuthDTO {
@@ -9,4 +10,24 @@ export class AuthDTO {
   @IsString()
   @IsNotEmpty()
   password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  fullName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  address: string;
+
+  @IsString()
+  @IsNotEmpty()
+  language: string;
+
+  @IsDate()
+  @Type(() => Date)
+  @IsNotEmpty()
+  dob: Date;
+
+  @IsOptional()
+  avatar?: Buffer;
 }

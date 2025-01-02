@@ -11,7 +11,7 @@ export class AuthService {
     private prismaService: PrismaService,
     private jwtService: JwtService,
     private configService: ConfigService,
-  ) {}
+  ) { }
   async register(authDTO: AuthDTO) {
     //generate password to hashedPassword
     const hashedPassword = await argon.hash(authDTO.password);
@@ -21,8 +21,11 @@ export class AuthService {
         data: {
           email: authDTO.email,
           hashedPassword: hashedPassword,
-          firstName: '',
-          lastName: '',
+          fullName: authDTO.fullName,
+          address: authDTO.address,
+          language: authDTO.language,
+          dob: authDTO.dob,
+          avatar: authDTO.avatar,
         },
         //only select id, email, createdAt
         select: {
