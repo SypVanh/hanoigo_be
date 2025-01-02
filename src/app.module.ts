@@ -14,6 +14,8 @@ import { LocationImageModule } from './location-image/location-image.module';
 import { MarkerModule } from './marker/marker.module';
 import { TaskModule } from './task/task.module';
 import { UserTaskModule } from './user-task/user-task.module';
+import { CategoryModule } from './category/category.module';
+import { CategoryLocationModule } from './category-location/category-location.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { UserTaskModule } from './user-task/user-task.module';
     AuthModule,
     UserModule,
     NoteModule,
+    CategoryModule,
+    CategoryLocationModule,
     CollectibleItemModule,
     CollectionModule,
     CollectionCollectibleItemModule,

@@ -15,7 +15,7 @@ export class LocationService {
     async findOne(id: number) {
         return this.prisma.location.findUnique({
             where: { id },
-            include: { comments: true, journeyLogs: true, markers: true, tasks: true, images: true },
+            include: { comments: true, journeyLogs: true, markers: true, tasks: true, images: true, categories: true },
         });
     }
 }

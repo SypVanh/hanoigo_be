@@ -63,13 +63,29 @@ model Task {
 }
 
 model Location {
-  id          Int             @id @default(autoincrement())
+  id          Int                @id @default(autoincrement())
   name        String
   comments    Comment[]
   journeyLogs JourneyLog[]
   markers     Marker[]
   tasks       Task[]
   images      LocationImage[]
+  categories  CategoryLocation[]
+}
+
+model Category {
+  id        Int                @id @default(autoincrement())
+  name      String
+  locations CategoryLocation[]
+}
+
+model CategoryLocation {
+  locationId Int
+  categoryId Int
+  location   Location @relation(fields: [locationId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@id([locationId, categoryId])
 }
 
 model Marker {
