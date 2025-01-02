@@ -10,6 +10,10 @@ import { CollectionCollectibleItemModule } from './collection-collectible-item/c
 import { JourneyLogModule } from './journey-log/journey-log.module';
 import { CommentModule } from './comment/comment.module';
 import { LocationModule } from './location/location.module';
+import { LocationImageModule } from './location-image/location-image.module';
+import { MarkerModule } from './marker/marker.module';
+import { TaskModule } from './task/task.module';
+import { UserTaskModule } from './user-task/user-task.module';
 
 @Module({
   imports: [
@@ -19,12 +23,16 @@ import { LocationModule } from './location/location.module';
     AuthModule,
     UserModule,
     NoteModule,
-    CollectionModule,
     CollectibleItemModule,
+    CollectionModule,
     CollectionCollectibleItemModule,
-    JourneyLogModule,
     CommentModule,
+    JourneyLogModule,
     LocationModule,
+    LocationImageModule,
+    MarkerModule,
+    TaskModule,
+    UserTaskModule,
     PrismaModule, //auto-import module
     //another modules
   ],

@@ -8,23 +8,31 @@ datasource db {
 }
 
 model User {
-  id             Int         @id @default(autoincrement())
-  email          String      @unique
+  id             Int          @id @default(autoincrement())
+  email          String       @unique
   hashedPassword String
   fullName       String
   address        String
   language       String
   dob            DateTime
   avatar         Bytes?
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
   //relationship
   notes          Note[]
   collection     Collection?
-  journeyLogs JourneyLog[]
-  comments    Comment[]
+  journeyLogs    JourneyLog[]
+  comments       Comment[]
+  tasks          UserTask[]
+}
 
-  @@map("users") //users id "table's name" in Postgres SQL
+model JourneyLog {
+  id         Int      @id @default(autoincrement())
+  title      String
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  locationId Int
+  location   Location @relation(fields: [locationId], references: [id])
 }
 
 model Collection {
@@ -33,30 +41,6 @@ model Collection {
   userId           Int                         @unique
   user             User                        @relation(fields: [userId], references: [id])
   collectibleItems CollectionCollectibleItem[]
-}
-
-model CollectibleItem {
-  id          Int                         @id @default(autoincrement())
-  name        String
-  collections CollectionCollectibleItem[]
-}
-
-model CollectionCollectibleItem {
-  collectionId      Int
-  collectibleItemId Int
-  collection        Collection      @relation(fields: [collectionId], references: [id])
-  collectibleItem   CollectibleItem @relation(fields: [collectibleItemId], references: [id])
-
-  @@id([collectionId, collectibleItemId])
-}
-
-model JourneyLog {
-  id        Int      @id @default(autoincrement())
-  title     String
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  locationId Int
-  location  Location @relation(fields: [locationId], references: [id])
 }
 
 model Comment {
@@ -68,11 +52,66 @@ model Comment {
   location   Location @relation(fields: [locationId], references: [id])
 }
 
+model Task {
+  id                Int              @id @default(autoincrement())
+  title             String
+  locationId        Int
+  location          Location         @relation(fields: [locationId], references: [id])
+  users             UserTask[]
+  collectibleItem   CollectibleItem? @relation(fields: [collectibleItemId], references: [id])
+  collectibleItemId Int?             @unique
+}
+
 model Location {
-  id          Int          @id @default(autoincrement())
+  id          Int             @id @default(autoincrement())
   name        String
   comments    Comment[]
   journeyLogs JourneyLog[]
+  markers     Marker[]
+  tasks       Task[]
+  images      LocationImage[]
+}
+
+model Marker {
+  id                Int              @id @default(autoincrement())
+  name              String
+  locationId        Int
+  location          Location         @relation(fields: [locationId], references: [id])
+  collectibleItemId Int?
+  collectibleItem   CollectibleItem? @relation(fields: [collectibleItemId], references: [id])
+}
+
+model LocationImage {
+  id         Int      @id @default(autoincrement())
+  url        String
+  locationId Int
+  location   Location @relation(fields: [locationId], references: [id])
+}
+
+model CollectibleItem {
+  id          Int                         @id @default(autoincrement())
+  name        String
+  collections CollectionCollectibleItem[]
+  markers     Marker[]
+  task        Task?
+}
+
+model CollectionCollectibleItem {
+  collectionId      Int
+  collectibleItemId Int
+  collection        Collection      @relation(fields: [collectionId], references: [id])
+  collectibleItem   CollectibleItem @relation(fields: [collectibleItemId], references: [id])
+
+  @@id([collectionId, collectibleItemId])
+}
+
+model UserTask {
+  userId Int
+  taskId Int
+  user   User @relation(fields: [userId], references: [id])
+  task   Task @relation(fields: [taskId], references: [id])
+
+  @@id([userId, taskId])
 }
 
 //One user can "write" Many notes

@@ -15,7 +15,7 @@ export class CollectibleItemService {
     async findOne(id: number) {
         return this.prisma.collectibleItem.findUnique({
             where: { id },
-            include: { collections: true },
+            include: { collections: true, markers: true, task: true },
         });
     }
 }

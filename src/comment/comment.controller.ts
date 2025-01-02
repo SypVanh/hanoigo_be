@@ -11,7 +11,7 @@ export class CommentController {
 
     @Post()
     create(
-         @GetUser('id') userId: number,
+        @GetUser('id') userId: number,
         @Body() createCommentDto: CreateCommentDto) {
         return this.commentService.create(userId, createCommentDto);
     }

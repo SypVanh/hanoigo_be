@@ -11,7 +11,7 @@ export class JourneyLogController {
 
     @Post()
     create(
-         @GetUser('id') userId: number,
+        @GetUser('id') userId: number,
         @Body() createJourneyLogDto: CreateJourneyLogDto) {
         return this.journeyLogService.create(userId, createJourneyLogDto);
     }
