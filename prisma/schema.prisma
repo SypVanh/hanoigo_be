@@ -21,6 +21,8 @@ model User {
   //relationship
   notes          Note[]
   collection     Collection?
+  journeyLogs JourneyLog[]
+  comments    Comment[]
 
   @@map("users") //users id "table's name" in Postgres SQL
 }
@@ -46,6 +48,31 @@ model CollectionCollectibleItem {
   collectibleItem   CollectibleItem @relation(fields: [collectibleItemId], references: [id])
 
   @@id([collectionId, collectibleItemId])
+}
+
+model JourneyLog {
+  id        Int      @id @default(autoincrement())
+  title     String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  locationId Int
+  location  Location @relation(fields: [locationId], references: [id])
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  content    String
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  locationId Int
+  location   Location @relation(fields: [locationId], references: [id])
+}
+
+model Location {
+  id          Int          @id @default(autoincrement())
+  name        String
+  comments    Comment[]
+  journeyLogs JourneyLog[]
 }
 
 //One user can "write" Many notes

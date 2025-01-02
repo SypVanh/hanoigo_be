@@ -7,6 +7,9 @@ import { ConfigModule } from '@nestjs/config';
 import { CollectionModule } from './collection/collection.module';
 import { CollectibleItemModule } from './collectible-item/collectible-item.module';
 import { CollectionCollectibleItemModule } from './collection-collectible-item/collection-collectible-item.module';
+import { JourneyLogModule } from './journey-log/journey-log.module';
+import { CommentModule } from './comment/comment.module';
+import { LocationModule } from './location/location.module';
 
 @Module({
   imports: [
@@ -19,6 +22,9 @@ import { CollectionCollectibleItemModule } from './collection-collectible-item/c
     CollectionModule,
     CollectibleItemModule,
     CollectionCollectibleItemModule,
+    JourneyLogModule,
+    CommentModule,
+    LocationModule,
     PrismaModule, //auto-import module
     //another modules
   ],
